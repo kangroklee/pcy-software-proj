@@ -1,5 +1,34 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
+
+class AddPictureFrame extends JFrame {
+    public AddPictureFrame() {
+        super("Add a Picture");
+        JPanel topPanel = new JPanel();
+        topPanel.add(new JLabel("Time"));
+        topPanel.add(new JTextField(20));
+        topPanel.add(new JLabel("(Picture) Tags"));
+        topPanel.add(new JTextField(20));
+        add(topPanel, BorderLayout.NORTH);
+
+        add(new JButton("Select Image File"), BorderLayout.CENTER);
+        add(new StuffPanel(null).getStuffPanel(), BorderLayout.EAST);
+
+        JPanel commentsPanel = new JPanel();
+        commentsPanel.add(new JLabel("Comments"));
+        commentsPanel.add(new JTextField(20));
+        add(commentsPanel, BorderLayout.SOUTH);
+
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.add(new JButton("More Stuff"), BorderLayout.WEST);
+        bottomPanel.add(new JButton("OK - Input End"), BorderLayout.EAST);
+        add(bottomPanel, BorderLayout.SOUTH);
+
+        this.pack();
+        this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+    }
+}
 
 public class Test {
 
@@ -24,7 +53,16 @@ public class Test {
         
         JPanel sideBar = new JPanel();
         sideBar.setLayout(new GridLayout(5,1));
-        sideBar.add(new JButton("ADD"));
+        JButton addPictureBtn = new JButton("ADD");
+        addPictureBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Create and display the new JFrame
+                AddPictureFrame f = new AddPictureFrame();
+                f.setVisible(true);
+            }
+        });
+        sideBar.add(addPictureBtn);
         sideBar.add(new JButton("DELETE"));
         sideBar.add(new JButton("LOAD"));
         sideBar.add(new JButton("SAVE"));
