@@ -34,9 +34,8 @@ public class PicturePanel {
 
 		gbc.gridx = 1;
 		
-//		JPanel stuffBundle = new StuffPanel(p.getRawStuffBundle()).getStuffPanel();
 		JScrollPane stuffBundle = new StuffPanel(p.getRawStuffBundle()).getStuffPanel();
-		stuffBundle.setBorder(BorderFactory.createLineBorder(Color.BLACK)); // Add this line
+		stuffBundle.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		picture.add(stuffBundle, gbc);
 		
 		/*Line3: comment*/

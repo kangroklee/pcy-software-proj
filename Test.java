@@ -2,32 +2,87 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.border.TitledBorder;
+// import java.util.ArrayList;
 
 class AddPictureFrame extends JFrame {
+	private JTextField timeField;
+	private JTextField tagsField;
+	private JTextField commentField;
+	private String pathToImage;
+    // private ArrayList<Stuff> StuffArr= new ArrayList<Stuff>();
+	
     public AddPictureFrame() {
         super("Add a Picture");
         JPanel topPanel = new JPanel();
         topPanel.add(new JLabel("Time"));
-        topPanel.add(new JTextField(15));
+        timeField = new JTextField(15);
+        topPanel.add(timeField);
         topPanel.add(new JLabel("(Picture) Tags"));
-        topPanel.add(new JTextField(15));
+        tagsField = new JTextField(15);
+        topPanel.add(tagsField);
         add(topPanel, BorderLayout.NORTH);
 
-        add(new JButton("Select Image File"), BorderLayout.CENTER);
+        JButton selectImageButton = new JButton("Select Image File");
+        selectImageButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser fileChooser = new JFileChooser();
+                int returnValue = fileChooser.showOpenDialog(null);
+                if (returnValue == JFileChooser.APPROVE_OPTION) {
+                    pathToImage = fileChooser.getSelectedFile().getAbsolutePath();
+                }
+            }
+        });
+        add(selectImageButton, BorderLayout.CENTER);
         add(new StuffPanel(null).getStuffPanel(), BorderLayout.EAST);
 
+        //TODO: fix - commentsPanel not visible!!
         JPanel commentsPanel = new JPanel();
         commentsPanel.add(new JLabel("Comments"));
         commentsPanel.add(new JTextField(20));
         add(commentsPanel, BorderLayout.SOUTH);
 
         JPanel bottomPanel = new JPanel();
-        bottomPanel.add(new JButton("More Stuff"), BorderLayout.LINE_START);
-        bottomPanel.add(new JButton("OK - Input End"), BorderLayout.LINE_END);
+        bottomPanel.add(new JButton("More Stuff"), BorderLayout.WEST);
+        JButton submitBtn = new JButton("OK - Input End");
+        submitBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    addPictureToPictureList();
+                } catch (Exception exp) {
+                    System.err.println(exp);
+                }
+                dispose();
+            }
+        });
+        bottomPanel.add(submitBtn, BorderLayout.EAST);
         add(bottomPanel, BorderLayout.SOUTH);
 
         this.pack();
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+    }
+
+    void addPictureToPictureList() throws Exception {
+        String timeString = "";
+        String tagsString = "";
+        String commentString = "nocomment";
+
+        try {
+            timeString = this.timeField.getText();
+            tagsString = this.tagsField.getText();
+            // commentString = this.commentField.getText();
+        }
+        catch (Exception e) {
+            System.out.println(e + "One or more fields are null");
+        }
+        
+        System.out.println("loloolala"+timeString+tagsString+commentString+pathToImage);
+        Picture p = new Picture(pathToImage, timeString, tagsString, commentString);
+        PictureList pl = SharedState.getWorkingPictureList();
+        p.print();
+        pl.add(p);
+        SharedState.setWorkingPictureList(pl);
     }
 }
 
@@ -96,10 +151,11 @@ class SearchPictureFrame extends JFrame {
 }
 
 public class Test {
-
     public static void main(String[] args) throws Exception {
         // Create a JFrame instance
         JFrame frame = new JFrame("PictureGUI test");
+        //TODO: add reference to main frame
+        SharedState.mainFrameRef = frame;
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         //set size to screen height
@@ -109,12 +165,16 @@ public class Test {
         frame.add(new JButton("Show All Pictures"), BorderLayout.NORTH);
         
         //1. make a PictureList
-        PictureList a = new PictureList("static/picture-normal-gui.data");
+        SharedState.setDefaultPictureList(new PictureList("static/picture-normal-gui.data"));
         //2. feed PictureList to PictureSection
-        JScrollPane ps = new PictureSection(a).getSection();
+        // PictureSection ps = new PictureSection(SharedState.getWorkingPictureList());
+        // JScrollPane scrollablePictureSection = ps.getSection();
+        PictureSection.update(SharedState.getWorkingPictureList());
+        //이러지말고 PictureSection에 update메소드를 만들어서 
+        //나중에 PictureList 바뀌게되면 update이랑 getSection 개별적으로 다시. (더 나은방법 없나??)
 
         // Add the main panel to the frame
-        frame.add(ps, BorderLayout.CENTER);
+        frame.add(PictureSection.scrollablePictureSection, BorderLayout.CENTER);
         
         JPanel sideBar = new JPanel();
         sideBar.setLayout(new GridLayout(5,1));

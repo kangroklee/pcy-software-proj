@@ -106,6 +106,26 @@ public class Picture {
 		}
 	}
 
+	Picture(String pathString, String timeString, String tagString, String commentString) throws Exception{
+		/* timestamp, id*/
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH:mm:ss:SSS");
+		try {
+			LocalDateTime parsedDate = LocalDateTime.parse(timeString, formatter);
+			this.timestamp = parsedDate;
+			this.id = "m_" + timeString;
+			this.imageID = "IMG" + timeString;
+		} catch(DateTimeParseException e) {
+			System.err.println("Invalid DateTime Format :"+timeString);
+			throw new Exception("Invalid DateTime Format :"+timeString);
+		}
+		this.pathToImage = pathString;
+		//TODO: get Stuff[] argument from StuffPanel
+		this.stuffBundle = null;
+
+		this.pictureTags = tagString;
+		this.comment = commentString;
+	}
+
 	
 	String getId() {
 		return id;
