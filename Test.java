@@ -5,6 +5,7 @@ import javax.swing.border.TitledBorder;
 // import java.util.ArrayList;
 
 class AddPictureFrame extends JFrame {
+    private JScrollPane pictureSectionRef;
 	private JTextField timeField;
 	private JTextField tagsField;
 	private JTextField commentField;
@@ -187,7 +188,7 @@ public class Test {
         PictureSection.update(SharedState.getWorkingPictureList());
 
         // Add the main panel to the frame
-        frame.add(PictureSection.scrollablePictureSection, BorderLayout.CENTER);
+        // frame.add(PictureSection.scrollablePictureSection, BorderLayout.CENTER);
         
         JPanel sideBar = new JPanel();
         sideBar.setLayout(new GridLayout(5,1));
@@ -197,6 +198,7 @@ public class Test {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Create and display the new JFrame
+                frame.remove(PictureSection.scrollablePictureSection);
                 AddPictureFrame f = new AddPictureFrame();
                 f.setVisible(true);
             }

@@ -2,6 +2,8 @@ import java.awt.Color;
 import javax.swing.*;
 
 public class PictureSection {
+	// TODO find better way than using prevScrollable
+	static JScrollPane prevScrollablePictureFrame;
 	static JScrollPane scrollablePictureSection;
 	static private JFrame mainFrameRef;
 	
@@ -36,13 +38,31 @@ public class PictureSection {
 			singlePicturePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 			pictures.add(singlePicturePanel);
 		}
-		// pictures.revalidate();
-		// pictures.repaint();
 		scrollablePictureSection = new JScrollPane(pictures);
 
-		// Add the updated scrollablePictureSection to the mainFrameRef
-		// getMainFrameRef().add(scrollablePictureSection);
 
+		// TODO: remove old scrollablePictureSection, add new. 
+		// Remove and Add the updated scrollablePictureSection to the mainFrameRef
+
+		// TRY1
+		// getMainFrameRef().remove(scrollablePictureSection);
+
+		// TRY2: this eliminates need for having scrollablePictureSection, however not very clean
+		// for (Component comp : getMainFrameRef().getComponents()) {
+		// 	if (comp instanceof JScrollPane) {
+		// 		getMainFrameRef().remove(comp);
+		// 	}
+		// }
+
+		// TRY3
+		// System.out.println("num of components in main frame: "+getMainFrameRef().getContentPane().getComponents().length);
+		
+		if(SharedState.lastPictureSectionRef != null) {
+			System.out.println(SharedState.lastPictureSectionRef);
+			getMainFrameRef().remove(SharedState.lastPictureSectionRef);
+		}
+		getMainFrameRef().add(scrollablePictureSection);
+		SharedState.lastPictureSectionRef = scrollablePictureSection;
 		// Revalidate and repaint the mainFrameRef
 		getMainFrameRef().revalidate();
 		getMainFrameRef().repaint();
