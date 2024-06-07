@@ -3,7 +3,7 @@ import javax.swing.*;
 
 public class PictureSection {
 	// TODO find better way than using prevScrollable
-	static JScrollPane prevScrollablePictureFrame;
+	// static JScrollPane prevScrollablePictureFrame;
 	static JScrollPane scrollablePictureSection;
 	static private JFrame mainFrameRef;
 	
@@ -57,12 +57,12 @@ public class PictureSection {
 		// TRY3
 		// System.out.println("num of components in main frame: "+getMainFrameRef().getContentPane().getComponents().length);
 		
-		if(SharedState.lastPictureSectionRef != null) {
-			System.out.println(SharedState.lastPictureSectionRef);
-			getMainFrameRef().remove(SharedState.lastPictureSectionRef);
-		}
+		// if(SharedState.lastPictureSectionRef != null) {
+		// 	System.out.println(SharedState.lastPictureSectionRef);
+		// 	getMainFrameRef().remove(SharedState.lastPictureSectionRef);
+		// }
 		getMainFrameRef().add(scrollablePictureSection);
-		SharedState.lastPictureSectionRef = scrollablePictureSection;
+		// SharedState.lastPictureSectionRef = scrollablePictureSection;
 		// Revalidate and repaint the mainFrameRef
 		getMainFrameRef().revalidate();
 		getMainFrameRef().repaint();

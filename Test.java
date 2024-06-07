@@ -5,7 +5,7 @@ import javax.swing.border.TitledBorder;
 // import java.util.ArrayList;
 
 class AddPictureFrame extends JFrame {
-    private JScrollPane pictureSectionRef;
+    // private JScrollPane pictureSectionRef;
 	private JTextField timeField;
 	private JTextField tagsField;
 	private JTextField commentField;
@@ -23,6 +23,7 @@ class AddPictureFrame extends JFrame {
         topPanel.add(tagsField);
         add(topPanel, BorderLayout.NORTH);
 
+        /* Select Image - JFileChooser */
         JButton selectImageButton = new JButton("Select Image File");
         selectImageButton.addActionListener(new ActionListener() {
             @Override
@@ -35,6 +36,8 @@ class AddPictureFrame extends JFrame {
             }
         });
         add(selectImageButton, BorderLayout.CENTER);
+
+        /* Add Stuff(s) */
         add(new StuffPanel(null).getStuffPanel(), BorderLayout.EAST);
 
         // DONE: fix - commentsPanel not visible
@@ -71,18 +74,18 @@ class AddPictureFrame extends JFrame {
     void addPictureToPictureList() throws Exception {
         String timeString = "";
         String tagsString = "";
-        String commentString = "nocomment";
+        String commentString = "";
 
         try {
             timeString = this.timeField.getText();
             tagsString = this.tagsField.getText();
-            // commentString = this.commentField.getText();
+            commentString = this.commentField.getText();
         }
         catch (Exception e) {
             System.out.println(e + "One or more fields are null");
         }
         
-        System.out.println("loloolala"+timeString+tagsString+commentString+pathToImage);
+        // System.out.println("loloolala"+timeString+tagsString+commentString+pathToImage);
         Picture p = new Picture(pathToImage, timeString, tagsString, commentString);
         PictureList pl = SharedState.getWorkingPictureList();
         int numOfPics = pl.size();
