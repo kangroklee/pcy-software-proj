@@ -36,10 +36,16 @@ public class PictureSection {
 			singlePicturePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 			pictures.add(singlePicturePanel);
 		}
+		// pictures.revalidate();
 		// pictures.repaint();
 		scrollablePictureSection = new JScrollPane(pictures);
-		scrollablePictureSection.repaint();
-		SharedState.mainFrameRef.revalidate();
-		// pictureSection.setViewportView(pictures);
+
+		// Add the updated scrollablePictureSection to the mainFrameRef
+		// getMainFrameRef().add(scrollablePictureSection);
+
+		// Revalidate and repaint the mainFrameRef
+		getMainFrameRef().revalidate();
+		getMainFrameRef().repaint();
 	}
+
 }

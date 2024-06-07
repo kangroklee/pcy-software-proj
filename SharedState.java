@@ -10,14 +10,14 @@ public class SharedState {
     static void changeState() {
         // DONE: update() PictureSection
         // DONE: for this, PS must be static
-        PictureSection.update(getWorkingPictureList());
+        PictureSection.update(currentPictureList);
     }
 
     static void setDefaultPictureList(PictureList pl) {
         if(isFirstInit) {
             defaultPictureList = pl;
             currentPictureList = defaultPictureList;
-            isFirstInit = false;
+            // isFirstInit = false;
         }
     }
     

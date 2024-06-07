@@ -150,9 +150,11 @@ public class Picture {
 	String getStuffBundle() {
 		String stuffs = "";
 		
-		for(int i=0;i<stuffBundle.length;i++) {
-			String s = "[ ;"+stuffBundle[i].name+";"+stuffBundle[i].type+";"+stuffBundle[i].tags+"] ";
-			stuffs += s;
+		if(stuffBundle != null) {
+			for(int i=0;i<stuffBundle.length;i++) {
+				String s = "[ ;"+stuffBundle[i].name+";"+stuffBundle[i].type+";"+stuffBundle[i].tags+"] ";
+				stuffs += s;
+			}
 		}
 		return stuffs;
 	}

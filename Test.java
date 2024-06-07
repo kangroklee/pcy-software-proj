@@ -36,20 +36,23 @@ class AddPictureFrame extends JFrame {
         add(selectImageButton, BorderLayout.CENTER);
         add(new StuffPanel(null).getStuffPanel(), BorderLayout.EAST);
 
-        //TODO: fix - commentsPanel not visible!!
+        // DONE: fix - commentsPanel not visible
         JPanel commentsPanel = new JPanel();
         commentsPanel.add(new JLabel("Comments"));
         commentsPanel.add(new JTextField(20));
-        add(commentsPanel, BorderLayout.SOUTH);
+        // add(commentsPanel, BorderLayout.SOUTH);
 
         JPanel bottomPanel = new JPanel();
+        bottomPanel.add(commentsPanel, BorderLayout.NORTH);
         bottomPanel.add(new JButton("More Stuff"), BorderLayout.WEST);
         JButton submitBtn = new JButton("OK - Input End");
         submitBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
+                    System.out.println("size of PictureList before ADD "+SharedState.getWorkingPictureList().size());
                     addPictureToPictureList();
+                    System.out.println("size of PictureList after ADD "+SharedState.getWorkingPictureList().size());
                 } catch (Exception exp) {
                     System.err.println(exp);
                 }
@@ -63,6 +66,7 @@ class AddPictureFrame extends JFrame {
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
+    //addPictureToPictureList: PASS
     void addPictureToPictureList() throws Exception {
         String timeString = "";
         String tagsString = "";
@@ -80,8 +84,10 @@ class AddPictureFrame extends JFrame {
         System.out.println("loloolala"+timeString+tagsString+commentString+pathToImage);
         Picture p = new Picture(pathToImage, timeString, tagsString, commentString);
         PictureList pl = SharedState.getWorkingPictureList();
+        int numOfPics = pl.size();
         p.print();
         pl.add(p);
+        assert(pl.size() == numOfPics+1);
         SharedState.setWorkingPictureList(pl);
     }
 }
@@ -154,30 +160,38 @@ public class Test {
     public static void main(String[] args) throws Exception {
         // Create a JFrame instance
         JFrame frame = new JFrame("PictureGUI test");
-        //TODO: add reference to main frame
-        SharedState.mainFrameRef = frame;
+        // TODO: add reference to main frame
+        // SharedState.mainFrameRef = frame;
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         //set size to screen height
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         frame.setSize(700, screenSize.height);
         
-        frame.add(new JButton("Show All Pictures"), BorderLayout.NORTH);
+        JButton showAllPicturesButton = new JButton("Show All Pictures");
+        showAllPicturesButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // TODO: invoke PictureSection from default PictureList
+                PictureSection.update(SharedState.getDefaultPictureList());
+                frame.repaint();
+            }
+        });
+        frame.add(showAllPicturesButton, BorderLayout.NORTH);
+
         
         //1. make a PictureList
         SharedState.setDefaultPictureList(new PictureList("static/picture-normal-gui.data"));
         //2. feed PictureList to PictureSection
-        // PictureSection ps = new PictureSection(SharedState.getWorkingPictureList());
-        // JScrollPane scrollablePictureSection = ps.getSection();
+        PictureSection.setMainFrameRef(frame);
         PictureSection.update(SharedState.getWorkingPictureList());
-        //이러지말고 PictureSection에 update메소드를 만들어서 
-        //나중에 PictureList 바뀌게되면 update이랑 getSection 개별적으로 다시. (더 나은방법 없나??)
 
         // Add the main panel to the frame
         frame.add(PictureSection.scrollablePictureSection, BorderLayout.CENTER);
         
         JPanel sideBar = new JPanel();
         sideBar.setLayout(new GridLayout(5,1));
+        /*(1/5) ADD */
         JButton addPictureBtn = new JButton("ADD");
         addPictureBtn.addActionListener(new ActionListener() {
             @Override
@@ -188,9 +202,39 @@ public class Test {
             }
         });
         sideBar.add(addPictureBtn);
+
+        /*(2/5) DELETE*/
         sideBar.add(new JButton("DELETE"));
-        sideBar.add(new JButton("LOAD"));
-        sideBar.add(new JButton("SAVE"));
+
+        /*(3/5) LOAD */
+        JButton loadPicturesButton = new JButton("LOAD");
+        loadPicturesButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // DONE: invoke PictureSection from file
+                frame.remove(PictureSection.scrollablePictureSection);
+                SharedState.setDefaultPictureList(new PictureList("static/picture-normal-gui.data"));
+                PictureSection.update(SharedState.getWorkingPictureList());
+                // @TEST
+                // System.out.println("number of pics in SharedState"+SharedState.getWorkingPictureList().size());
+                frame.add(PictureSection.scrollablePictureSection, BorderLayout.CENTER);
+                frame.revalidate();
+                frame.repaint();
+            }
+        });
+        sideBar.add(loadPicturesButton);
+
+        /*(4/5) SAVE TO FILE */
+        JButton exportWorkingListButton = new JButton("SAVE");
+        exportWorkingListButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SharedState.getWorkingPictureList().exportListToFile();
+            }
+        });
+        sideBar.add(exportWorkingListButton);
+
+        /*(5/5) SEARCH */
         JButton searchPictureButton = new JButton("SEARCH");
         searchPictureButton.addActionListener(new ActionListener() {
             @Override
