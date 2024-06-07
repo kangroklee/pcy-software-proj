@@ -106,7 +106,7 @@ public class Picture {
 		}
 	}
 
-	Picture(String pathString, String timeString, String tagString, String commentString) throws Exception{
+	Picture(String pathString, String timeString, String tagString, String commentString, Stuff[] stuffBundle) throws Exception{
 		/* timestamp, id*/
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH:mm:ss:SSS");
 		try {
@@ -119,11 +119,11 @@ public class Picture {
 			throw new Exception("Invalid DateTime Format :"+timeString);
 		}
 		this.pathToImage = pathString;
-		//TODO: get Stuff[] argument from StuffPanel
-		this.stuffBundle = null;
-
+		// DONE: get Stuff[] argument from StuffPanel
+		this.stuffBundle = stuffBundle;
 		this.pictureTags = tagString;
 		this.comment = commentString;
+		
 	}
 
 	

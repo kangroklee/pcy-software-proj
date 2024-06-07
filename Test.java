@@ -10,6 +10,8 @@ class AddPictureFrame extends JFrame {
 	private JTextField tagsField;
 	private JTextField commentField;
 	private String pathToImage;
+    private JPanel stuffToAdd;
+    private StuffPanel rawStuff;
     // private ArrayList<Stuff> StuffArr= new ArrayList<Stuff>();
 	
     public AddPictureFrame() {
@@ -38,12 +40,18 @@ class AddPictureFrame extends JFrame {
         add(selectImageButton, BorderLayout.CENTER);
 
         /* Add Stuff(s) */
-        add(new StuffPanel(null).getStuffPanel(), BorderLayout.EAST);
+        // TODO: test scrollable, editable StuffAdd
+        rawStuff = new StuffPanel(null);
+        // TODO: setEditable=true here on rawStuff
+        stuffToAdd = rawStuff.getStuffNoScroll();
+        JScrollPane stuffToAddScrollable = new JScrollPane(stuffToAdd);
+        add(stuffToAddScrollable, BorderLayout.EAST);
 
         // DONE: fix - commentsPanel not visible
         JPanel commentsPanel = new JPanel();
         commentsPanel.add(new JLabel("Comments"));
-        commentsPanel.add(new JTextField(20));
+        commentField = new JTextField(20);
+        commentsPanel.add(commentField);
         // add(commentsPanel, BorderLayout.SOUTH);
 
         JPanel bottomPanel = new JPanel();
@@ -75,18 +83,28 @@ class AddPictureFrame extends JFrame {
         String timeString = "";
         String tagsString = "";
         String commentString = "";
+        Stuff tempStuff;
+        Stuff[] stuffBundle = new Stuff[1];
 
         try {
             timeString = this.timeField.getText();
             tagsString = this.tagsField.getText();
             commentString = this.commentField.getText();
+            
+            // TODO: Add iteration to more Stuffs
+            String stuffType = this.rawStuff.typeField.getText();
+            String stuffName = this.rawStuff.nameField.getText();
+            String stuffTags = this.rawStuff.tagsField.getText();
+            tempStuff = new Stuff(stuffType, stuffName, stuffTags);
+            stuffBundle[0] = tempStuff;
         }
         catch (Exception e) {
             System.out.println(e + "One or more fields are null");
+            e.printStackTrace();
         }
         
         // System.out.println("loloolala"+timeString+tagsString+commentString+pathToImage);
-        Picture p = new Picture(pathToImage, timeString, tagsString, commentString);
+        Picture p = new Picture(pathToImage, timeString, tagsString, commentString, stuffBundle);
         PictureList pl = SharedState.getWorkingPictureList();
         int numOfPics = pl.size();
         p.print();

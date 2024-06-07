@@ -6,6 +6,10 @@ import java.awt.Component;
 public class StuffPanel {
     private JScrollPane stuffBoxScrollable;
     private JPanel stuffBox;
+    JTextField typeField;
+    JTextField nameField;
+    JTextField tagsField;
+
     
     StuffPanel(Stuff[] stuffBundle) {
     	stuffBox = new JPanel();
@@ -24,21 +28,21 @@ public class StuffPanel {
             
             JPanel typePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
             typePanel.add(new JLabel("Type"));
-            JTextField typeField = new JTextField(stuff.type, 20);
+            typeField = new JTextField(stuff.type, 20);
             // typeField.setEditable(false);
             typePanel.add(typeField);
             stuffPanel.add(typePanel);
             
             JPanel namePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
             namePanel.add(new JLabel("Name"));
-            JTextField nameField = new JTextField(stuff.name, 20);
+            nameField = new JTextField(stuff.name, 20);
             // nameField.setEditable(false);
             namePanel.add(nameField);
             stuffPanel.add(namePanel);
             
             JPanel tagsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
             tagsPanel.add(new JLabel("Tags"));
-            JTextField tagsField = new JTextField(stuff.tags, 20);
+            tagsField = new JTextField(stuff.tags, 20);
             // tagsField.setEditable(false);
             tagsPanel.add(tagsField);
             stuffPanel.add(tagsPanel);
