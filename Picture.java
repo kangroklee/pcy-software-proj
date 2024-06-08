@@ -152,8 +152,13 @@ public class Picture {
 		
 		if(stuffBundle != null) {
 			for(int i=0;i<stuffBundle.length;i++) {
-				String s = "[ ;"+stuffBundle[i].name+";"+stuffBundle[i].type+";"+stuffBundle[i].tags+"] ";
-				stuffs += s;
+				if(stuffBundle[i] != null) {
+					String name = stuffBundle[i].name != null ? stuffBundle[i].name : "";
+					String type = stuffBundle[i].type != null ? stuffBundle[i].type : "";
+					String tags = stuffBundle[i].tags != null ? stuffBundle[i].tags : "";
+					String s = "[ ;"+name+";"+type+";"+tags+"] ";
+					stuffs += s;
+				}
 			}
 		}
 		return stuffs;
