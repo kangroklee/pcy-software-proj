@@ -120,6 +120,7 @@ public class Picture {
 		}
 		this.pathToImage = pathString;
 		// DONE: get Stuff[] argument from StuffPanel
+		// TODO: test if checking for null stuffBundles here(at the point of creation) is better 
 		this.stuffBundle = stuffBundle;
 		this.pictureTags = tagString;
 		this.comment = commentString;

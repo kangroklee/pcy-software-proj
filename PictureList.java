@@ -129,8 +129,6 @@ public class PictureList {
 				}
 			}
 		}
-		// @TEST
-		System.out.println(match);
 		return match;
 	}
 
@@ -145,8 +143,6 @@ public class PictureList {
 				}
 			}
 		}
-		// @TEST
-		System.out.println(match);
 		return match;
 	}
 

@@ -1,9 +1,8 @@
 import javax.swing.JFrame;
-// import javax.swing.JScrollPane;
 
 public class SharedState {
+    //TODO: find all refs of mainFrameRef, deprecate.
     static public JFrame mainFrameRef;
-    // static public JScrollPane lastPictureSectionRef;
 
     static private PictureList defaultPictureList;
     static private PictureList currentPictureList; //in case of SEARCH function, where new PL instance is returned

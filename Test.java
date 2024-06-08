@@ -2,17 +2,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.border.TitledBorder;
-// import java.util.ArrayList;
 
 class AddPictureFrame extends JFrame {
-    // private JScrollPane pictureSectionRef;
 	private JTextField timeField;
 	private JTextField tagsField;
 	private JTextField commentField;
 	private String pathToImage;
     private JPanel stuffToAdd;
     private StuffPanel rawStuff;
-    // private ArrayList<Stuff> StuffArr= new ArrayList<Stuff>();
 	
     public AddPictureFrame() {
         super("Add a Picture");
@@ -54,7 +51,6 @@ class AddPictureFrame extends JFrame {
         commentsPanel.add(new JLabel("Comments"));
         commentField = new JTextField(20);
         commentsPanel.add(commentField);
-        // add(commentsPanel, BorderLayout.SOUTH);
 
         JPanel bottomPanel = new JPanel();
         bottomPanel.add(commentsPanel, BorderLayout.NORTH);
@@ -105,7 +101,6 @@ class AddPictureFrame extends JFrame {
             e.printStackTrace();
         }
         
-        // System.out.println("loloolala"+timeString+tagsString+commentString+pathToImage);
         Picture p = new Picture(pathToImage, timeString, tagsString, commentString, stuffBundle);
         PictureList pl = SharedState.getWorkingPictureList();
         int numOfPics = pl.size();
@@ -249,8 +244,6 @@ public class Test {
     public static void main(String[] args) throws Exception {
         // Create a JFrame instance
         JFrame frame = new JFrame("PictureGUI test");
-        // TODO: add reference to main frame
-        // SharedState.mainFrameRef = frame;
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         //set size to screen height
@@ -277,19 +270,6 @@ public class Test {
         //2. feed PictureList to PictureSection
         PictureSection.setMainFrameRef(frame);
         PictureSection.update(SharedState.getWorkingPictureList());
-
-        // Add the main panel to the frame
-        // frame.add(PictureSection.scrollablePictureSection, BorderLayout.CENTER);
-
-        // TODO: CLEANUP SEARCH TEST
-        /* SEARCH TEST */
-        PictureSearch query = new PictureSearch(SharedState.getWorkingPictureList());
-        //don't pass null into query!!
-        PictureList result = query.andSearch("2024-03-03_09:30:00:000", "2024-04-14_12:31:00:000", "", "school", "", "", "");
-        // PictureList result = query.detailANDSearch("spring", "", "", "", "");
-        System.out.println("Num of Pictures in result: "+result.size());
-        result.printPictures();
-        /* SEARCH TEST END */
         
         JPanel sideBar = new JPanel();
         sideBar.setLayout(new GridLayout(5,1));

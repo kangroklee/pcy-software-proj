@@ -1,7 +1,6 @@
 import javax.swing.*;
 import java.awt.FlowLayout;
 import java.awt.Color;
-import java.awt.Component;
 
 public class StuffPanel {
     private JScrollPane stuffBoxScrollable;
