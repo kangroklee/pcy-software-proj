@@ -257,12 +257,15 @@ public class Test {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         frame.setSize(700, screenSize.height);
         
+        //TODO: FIX showAllPictures (not refreshing)
         JButton showAllPicturesButton = new JButton("Show All Pictures");
         showAllPicturesButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                frame.remove(PictureSection.scrollablePictureSection);
                 // TODO: invoke PictureSection from default PictureList
                 PictureSection.update(SharedState.getDefaultPictureList());
+                frame.revalidate();
                 frame.repaint();
             }
         });
