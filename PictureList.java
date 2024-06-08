@@ -155,12 +155,12 @@ public class PictureList {
 		for (int i=0; i < numOfPics; i++) {
 			Stuff[] stuffs = pictureArr[i].getRawStuffBundle();
 			for (int j=0; j<stuffs.length; j++) {
-				if(stuffs[j].type.equals(key)) {
-					try {
+				try {
+					if(stuffs[j].type.equals(key)) {
 						match.add(pictureArr[i]);
-					} catch (Exception e) {
-						continue;
 					}
+				} catch (Exception e) {
+					continue;
 				}
 			}
 		}
@@ -172,12 +172,12 @@ public class PictureList {
 		for (int i=0; i < numOfPics; i++) {
 			Stuff[] stuffs = pictureArr[i].getRawStuffBundle();
 			for (int j=0; j<stuffs.length; j++) {
-				if(stuffs[j].name.equals(key)) {
-					try {
+				try {
+					if(stuffs[j].name.equals(key)) {
 						match.add(pictureArr[i]);
-					} catch (Exception e) {
-						continue;
 					}
+				} catch (Exception e) {
+					continue;
 				}
 			}
 		}
@@ -189,13 +189,12 @@ public class PictureList {
 		for (int i=0; i < numOfPics; i++) {
 			Stuff[] stuffs = pictureArr[i].getRawStuffBundle();
 			for (int j=0; j<stuffs.length; j++) {
-				if(stuffs[j].tags.contains(key)) {
-					try {
+				try {
+					if(stuffs[j].tags.contains(key)) {
 						match.add(pictureArr[i]);
-					} catch (Exception e) {
-						continue;
 					}
-					
+				} catch (Exception e) {
+					continue;
 				}
 			}
 		}
