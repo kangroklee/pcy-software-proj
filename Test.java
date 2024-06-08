@@ -117,6 +117,15 @@ class AddPictureFrame extends JFrame {
 }
 
 class SearchPictureFrame extends JFrame {
+    private JTextField startTime;
+    private JTextField endTime;
+    private JTextField tags;
+    private JTextField comments;
+    private JTextField stuffType;
+    private JTextField stuffName;
+    private JTextField stuffTags;
+    private JTextField generalField;
+
     public SearchPictureFrame() {
         super("Search Picture");
         // Create the Time Search panel with a titled border
@@ -124,10 +133,12 @@ class SearchPictureFrame extends JFrame {
         timeSearchPanel.setBorder(new TitledBorder("Time Search"));
         timeSearchPanel.setLayout(new GridLayout(2, 3, 5, 5));
         timeSearchPanel.add(new JLabel("From"));
-        timeSearchPanel.add(new JTextField());
+        startTime = new JTextField();
+        timeSearchPanel.add(startTime);
         timeSearchPanel.add(new JLabel("(yyyy-MM-dd_HH:mm:ss)"));
         timeSearchPanel.add(new JLabel("To"));
-        timeSearchPanel.add(new JTextField());
+        endTime = new JTextField();
+        timeSearchPanel.add(endTime);
 
         // Create the Keyword Search panel with a titled border
         JPanel keywordSearchPanel = new JPanel();
@@ -140,24 +151,30 @@ class SearchPictureFrame extends JFrame {
         JPanel metaSearchPanel = new JPanel();
         metaSearchPanel.setLayout(new GridLayout(2, 2));
         metaSearchPanel.add(new JLabel("Tags"));
-        metaSearchPanel.add(new JTextField(10));
+        tags = new JTextField(10);
+        metaSearchPanel.add(tags);
         metaSearchPanel.add(new JLabel("Comments"));
-        metaSearchPanel.add(new JTextField(10));
+        comments = new JTextField(10);
+        metaSearchPanel.add(comments);
         detailSearchPanel.add(metaSearchPanel, BorderLayout.WEST);
 
         JPanel stuffSearchPanel = new JPanel();
         stuffSearchPanel.setLayout(new GridLayout(3, 2, 1, 5));
         stuffSearchPanel.add(new JLabel("Type"));
-        stuffSearchPanel.add(new JTextField(10));
+        stuffType = new JTextField(10);
+        stuffSearchPanel.add(stuffType);
         stuffSearchPanel.add(new JLabel("Name"));
-        stuffSearchPanel.add(new JTextField(10));
+        stuffName = new JTextField(10);
+        stuffSearchPanel.add(stuffName);
         stuffSearchPanel.add(new JLabel("Tags"));
-        stuffSearchPanel.add(new JTextField(10));
+        stuffTags = new JTextField(10);
+        stuffSearchPanel.add(stuffTags);
         detailSearchPanel.add(stuffSearchPanel, BorderLayout.EAST);
 
         JPanel generalSearchPanel = new JPanel();
         generalSearchPanel.add(new JLabel("General Search"));
-        generalSearchPanel.add(new JTextField(10));
+        generalField = new JTextField(10);
+        generalSearchPanel.add(generalField);
         
         keywordSearchPanel.add(detailSearchPanel, BorderLayout.CENTER);
         keywordSearchPanel.add(generalSearchPanel, BorderLayout.SOUTH);
@@ -165,9 +182,57 @@ class SearchPictureFrame extends JFrame {
         // Create the buttons panel
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.setLayout(new FlowLayout());
-        buttonsPanel.add(new JButton("AND SEARCH"));
-        buttonsPanel.add(new JButton("OR SEARCH"));
-        buttonsPanel.add(new JButton("CLOSE"));
+        JButton andSearchButton = new JButton("AND SEARCH");
+        andSearchButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                PictureList result = new PictureList();
+                PictureSearch query = new PictureSearch(SharedState.getWorkingPictureList());
+                // JTextField.getText() will return "" on empty field.
+                
+                if(generalField.getText().isEmpty()) {
+                    // Case1. Keyword Search > Detail Search
+                    result = query.andSearch(startTime.getText(), endTime.getText(), tags.getText(), comments.getText(), stuffType.getText(), stuffName.getText(), stuffTags.getText());
+                } else {
+                    // Case2. Keyword Search > General Search
+                    result = query.andGeneralSearch(startTime.getText(), endTime.getText(), generalField.getText());
+                }   
+                SharedState.setWorkingPictureList(result);
+                dispose();
+            }
+        });
+        buttonsPanel.add(andSearchButton);
+        JButton orSearchButton = new JButton("OR SEARCH");
+        orSearchButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                PictureList result = new PictureList();
+                PictureSearch query = new PictureSearch(SharedState.getWorkingPictureList());
+                // JTextField.getText() will return "" on empty field.
+                
+                if(generalField.getText().isEmpty()) {
+                    // Case1. Keyword Search > Detail Search
+                    result = query.orSearch(startTime.getText(), endTime.getText(), tags.getText(), comments.getText(), stuffType.getText(), stuffName.getText(), stuffTags.getText());
+                } else {
+                    // Case2. Keyword Search > General Search
+                    result = query.orGeneralSearch(startTime.getText(), endTime.getText(), generalField.getText());
+                }   
+                SharedState.setWorkingPictureList(result);
+                dispose();
+            }
+        });
+        buttonsPanel.add(orSearchButton);
+        JButton closeButton = new JButton("CLOSE");
+        closeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //we removed PictureSection upon clicking SEARCH.
+                //this restores PictureSection.
+                SharedState.changeState();
+                dispose();
+            }
+        });
+        buttonsPanel.add(closeButton);
 
         // Add the panels to the main frame
         add(timeSearchPanel, BorderLayout.NORTH);
@@ -274,6 +339,7 @@ public class Test {
         searchPictureButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                frame.remove(PictureSection.scrollablePictureSection);
                 // Create and display the new JFrame
                 SearchPictureFrame f = new SearchPictureFrame();
                 f.setVisible(true);

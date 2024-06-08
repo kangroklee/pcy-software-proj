@@ -10,7 +10,7 @@ public class PictureSearch {
 		this.old = old;
 	}
 	
-	// TODO: use Builder Pattern to simplify
+	// TODO: simplify args
 	public PictureList andSearch(String start, String end, String tags, String comments, String stuffType, String stuffName, String stuffTags) {
 		PictureList result = new PictureList();
 		this.old = timeSearch(start, end);
@@ -22,6 +22,20 @@ public class PictureSearch {
 		PictureList result = new PictureList();
 		result = timeSearch(start, end);
 		result = this._merge(result, detailORSearch(tags, comments, stuffType, stuffName, stuffTags));
+		return result;
+	}
+
+	public PictureList andGeneralSearch(String start, String end, String generalKey) {
+		PictureList result = new PictureList();
+		this.old = timeSearch(start, end);
+		result = detailORSearch(generalKey, generalKey, generalKey, generalKey, generalKey);
+		return result;
+	}
+
+	public PictureList orGeneralSearch(String start, String end, String generalKey) {
+		PictureList result = new PictureList();
+		result = timeSearch(start, end);
+		result = this._merge(result, detailORSearch(generalKey, generalKey, generalKey, generalKey, generalKey));
 		return result;
 	}
 	
@@ -48,7 +62,7 @@ public class PictureSearch {
 		return sorted;
 	}
 	
-	public PictureList detailANDSearch(String tags, String comments, String stuffType, String stuffName, String stuffTags) {
+	private PictureList detailANDSearch(String tags, String comments, String stuffType, String stuffName, String stuffTags) {
 		PictureList sorted = new PictureList();
 		sorted = this._clone(old);
 		System.out.println("Number of Pictures before detailANDSearch: "+sorted.size());
@@ -78,7 +92,6 @@ public class PictureSearch {
 	
 	private PictureList detailORSearch(String tags, String comments, String stuffType, String stuffName, String stuffTags) {
 		PictureList sorted = new PictureList();
-		//does this work? or does sorted share same ref as old??
 		sorted = this._clone(old);
 		if(!tags.isEmpty()) {
 			sorted = old.getPicturesByTag(tags);

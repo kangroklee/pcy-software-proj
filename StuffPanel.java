@@ -28,21 +28,25 @@ public class StuffPanel {
             
             JPanel typePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
             typePanel.add(new JLabel("Type"));
-            typeField = new JTextField(stuff.type, 20);
+            if(stuff == null) {
+                System.out.println("SPONGEBOB!!!!");
+            }
+
+            typeField = new JTextField(stuff != null ? stuff.type : "", 20);
             // typeField.setEditable(false);
             typePanel.add(typeField);
             stuffPanel.add(typePanel);
             
             JPanel namePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
             namePanel.add(new JLabel("Name"));
-            nameField = new JTextField(stuff.name, 20);
+            nameField = new JTextField(stuff != null ? stuff.name : "", 20);
             // nameField.setEditable(false);
             namePanel.add(nameField);
             stuffPanel.add(namePanel);
             
             JPanel tagsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
             tagsPanel.add(new JLabel("Tags"));
-            tagsField = new JTextField(stuff.tags, 20);
+            tagsField = new JTextField(stuff != null ? stuff.tags : "", 20);
             // tagsField.setEditable(false);
             tagsPanel.add(tagsField);
             stuffPanel.add(tagsPanel);

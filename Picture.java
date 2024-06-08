@@ -160,6 +160,10 @@ public class Picture {
 	}
 	
 	Stuff[] getRawStuffBundle() {
+		// DONE: fix NullPointerException when accessing empty stuffBundle
+		if (stuffBundle == null) {
+			stuffBundle = new Stuff[1];
+		}
 		return stuffBundle;
 	}
 	
