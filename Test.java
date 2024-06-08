@@ -34,6 +34,8 @@ class AddPictureFrame extends JFrame {
                 int returnValue = fileChooser.showOpenDialog(null);
                 if (returnValue == JFileChooser.APPROVE_OPTION) {
                     pathToImage = fileChooser.getSelectedFile().getAbsolutePath();
+                    ImageIcon imageIcon = new ImageIcon(pathToImage);
+                    selectImageButton.setIcon(imageIcon);
                 }
             }
         });
@@ -210,6 +212,16 @@ public class Test {
 
         // Add the main panel to the frame
         // frame.add(PictureSection.scrollablePictureSection, BorderLayout.CENTER);
+
+        // TODO: CLEANUP SEARCH TEST
+        /* SEARCH TEST */
+        PictureSearch query = new PictureSearch(SharedState.getWorkingPictureList());
+        //don't pass null into query!!
+        PictureList result = query.andSearch("2024-03-03_09:30:00:000", "2024-04-14_12:31:00:000", "", "school", "", "", "");
+        // PictureList result = query.detailANDSearch("spring", "", "", "", "");
+        System.out.println("Num of Pictures in result: "+result.size());
+        result.printPictures();
+        /* SEARCH TEST END */
         
         JPanel sideBar = new JPanel();
         sideBar.setLayout(new GridLayout(5,1));

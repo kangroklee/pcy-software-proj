@@ -4,6 +4,7 @@ import java.util.Scanner;
 import java.util.Comparator;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class PictureList {
@@ -69,6 +70,136 @@ public class PictureList {
 			}
 		});
 		this.pictureArr = sortedPictureArr;
+	}
+
+	public PictureList getPicturesInRange(LocalDateTime start, LocalDateTime end) {
+		PictureList picturesInRange = new PictureList();
+		for (int i = 0; i < numOfPics; i++) {
+			LocalDateTime pictureTime = pictureArr[i].getTimestamp();
+			if ((pictureTime.isEqual(start) || pictureTime.isAfter(start)) && (pictureTime.isEqual(end) || pictureTime.isBefore(end))) {
+				try {
+					picturesInRange.add(pictureArr[i]);
+				} catch (Exception e) {
+					continue;
+				}
+				
+			}
+		}
+		return picturesInRange;
+	}
+
+	public PictureList getPicturesAfter(LocalDateTime time) {
+		PictureList picturesAfter = new PictureList();
+		for (int i = 0; i < numOfPics; i++) {
+			LocalDateTime pictureTime = pictureArr[i].getTimestamp();
+			if ((pictureTime.isEqual(time) || pictureTime.isAfter(time))) {
+				try {
+					picturesAfter.add(pictureArr[i]);
+				} catch (Exception e) {
+					continue;
+				}
+			}
+		}
+		return picturesAfter;
+	}
+
+	public PictureList getPicturesBefore(LocalDateTime time) {
+		PictureList picturesBefore = new PictureList();
+		for (int i = 0; i < numOfPics; i++) {
+			LocalDateTime pictureTime = pictureArr[i].getTimestamp();
+			if ((pictureTime.isEqual(time) || pictureTime.isBefore(time))) {
+				try {
+					picturesBefore.add(pictureArr[i]);
+				} catch (Exception e) {
+					continue;
+				}
+			}
+		}
+		return picturesBefore;
+	}
+
+	public PictureList getPicturesByTag(String key) {
+		PictureList match = new PictureList();
+		for (int i=0; i < numOfPics; i++) {
+			if(pictureArr[i].getTags().contains(key)) {
+				try {
+					match.add(pictureArr[i]);
+				} catch (Exception e) {
+					continue;
+				}
+			}
+		}
+		// @TEST
+		System.out.println(match);
+		return match;
+	}
+
+	public PictureList getPicturesByComment(String key) {
+		PictureList match = new PictureList();
+		for (int i=0; i < numOfPics; i++) {
+			if(pictureArr[i].getComment().contains(key)) {
+				try {
+					match.add(pictureArr[i]);
+				} catch (Exception e) {
+					continue;
+				}
+			}
+		}
+		// @TEST
+		System.out.println(match);
+		return match;
+	}
+
+	public PictureList getPicturesByStuffType(String key) {
+		PictureList match = new PictureList();
+		for (int i=0; i < numOfPics; i++) {
+			Stuff[] stuffs = pictureArr[i].getRawStuffBundle();
+			for (int j=0; j<stuffs.length; j++) {
+				if(stuffs[j].type.equals(key)) {
+					try {
+						match.add(pictureArr[i]);
+					} catch (Exception e) {
+						continue;
+					}
+				}
+			}
+		}
+		return match;
+	}
+
+	public PictureList getPicturesByStuffName(String key) {
+		PictureList match = new PictureList();
+		for (int i=0; i < numOfPics; i++) {
+			Stuff[] stuffs = pictureArr[i].getRawStuffBundle();
+			for (int j=0; j<stuffs.length; j++) {
+				if(stuffs[j].name.equals(key)) {
+					try {
+						match.add(pictureArr[i]);
+					} catch (Exception e) {
+						continue;
+					}
+				}
+			}
+		}
+		return match;
+	}
+
+	public PictureList getPicturesByStuffTags(String key) {
+		PictureList match = new PictureList();
+		for (int i=0; i < numOfPics; i++) {
+			Stuff[] stuffs = pictureArr[i].getRawStuffBundle();
+			for (int j=0; j<stuffs.length; j++) {
+				if(stuffs[j].tags.contains(key)) {
+					try {
+						match.add(pictureArr[i]);
+					} catch (Exception e) {
+						continue;
+					}
+					
+				}
+			}
+		}
+		return match;
 	}
 	
 	void printPictures() {
