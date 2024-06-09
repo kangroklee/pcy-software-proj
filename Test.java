@@ -1,6 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+
 import javax.swing.border.TitledBorder;
 
 class AddPictureFrame extends JFrame {
@@ -266,10 +268,10 @@ public class Test {
 
         
         //1. make a PictureList
-        SharedState.setDefaultPictureList(new PictureList("static/picture-normal-gui.data"));
+        // SharedState.setDefaultPictureList(new PictureList("static/picture-normal-gui.data"));
         //2. feed PictureList to PictureSection
         PictureSection.setMainFrameRef(frame);
-        PictureSection.update(SharedState.getWorkingPictureList());
+        // PictureSection.update(SharedState.getWorkingPictureList());
         
         JPanel sideBar = new JPanel();
         sideBar.setLayout(new GridLayout(5,1));
@@ -295,8 +297,20 @@ public class Test {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // DONE: invoke PictureSection from file
-                frame.remove(PictureSection.scrollablePictureSection);
-                SharedState.setDefaultPictureList(new PictureList("static/picture-normal-gui.data"));
+                // reset frame
+                if(PictureSection.scrollablePictureSection != null) {
+                    frame.remove(PictureSection.scrollablePictureSection);
+                }
+
+                String pathToImage = "";
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
+                int returnValue = fileChooser.showOpenDialog(null);
+                if (returnValue == JFileChooser.APPROVE_OPTION) {
+                    pathToImage = fileChooser.getSelectedFile().getAbsolutePath();
+
+                }
+                SharedState.setDefaultPictureList(new PictureList(pathToImage)); // no exceptions 
                 PictureSection.update(SharedState.getWorkingPictureList());
                 // @TEST
                 // System.out.println("number of pics in SharedState"+SharedState.getWorkingPictureList().size());
@@ -312,6 +326,14 @@ public class Test {
         exportWorkingListButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
+                int returnValue = fileChooser.showSaveDialog(null);
+                if (returnValue == JFileChooser.APPROVE_OPTION) {
+                    File fileToSave = fileChooser.getSelectedFile();
+                    System.out.println("Save as file: " + fileToSave.getAbsolutePath());
+                    // Now you can use fileToSave to write your data to.
+}
                 SharedState.getWorkingPictureList().exportListToFile();
             }
         });
