@@ -143,6 +143,7 @@ public class PictureList {
 				}
 			}
 		}
+
 		return match;
 	}
 
@@ -205,9 +206,13 @@ public class PictureList {
 	}
 	
 	void exportListToFile() {
+		this.exportListToFile(new File("picturelist_export.data"));
+	}
+
+	void exportListToFile(File fileToSave) {
 		/* Create File */
 		try {
-			File myObj = new File("picturelist_export.data");
+			File myObj = fileToSave;
 			if (myObj.createNewFile()) {
 				System.out.println("File created: " + myObj.getName());
 			} else {
@@ -219,7 +224,7 @@ public class PictureList {
 		}
 		/* Write Contents to File */
 		try {
-			FileWriter myWriter = new FileWriter("picturelist_export.data");
+			FileWriter myWriter = new FileWriter(fileToSave.getAbsolutePath());
 			for(int i=0;i<numOfPics;i++) {
 				String id = pictureArr[i].getId();
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH:mm:ss:SSS");
