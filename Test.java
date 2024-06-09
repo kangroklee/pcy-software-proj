@@ -332,9 +332,8 @@ public class Test {
                 if (returnValue == JFileChooser.APPROVE_OPTION) {
                     File fileToSave = fileChooser.getSelectedFile();
                     System.out.println("Save as file: " + fileToSave.getAbsolutePath());
-                    // Now you can use fileToSave to write your data to.
-}
-                SharedState.getWorkingPictureList().exportListToFile();
+                    SharedState.getWorkingPictureList().exportListToFile(fileToSave);
+                }
             }
         });
         sideBar.add(exportWorkingListButton);
